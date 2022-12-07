@@ -4,7 +4,6 @@ import UserInfoItem from "../UserInfoItem/UserInfoItem";
 import { ScreenParams } from "../App/App";
 
 interface ParamsListProps {
-    location: object | null;
     IP: string | null;
     browserName: string | null;
     prevPage: string;

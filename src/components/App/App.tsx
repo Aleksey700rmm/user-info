@@ -2,17 +2,21 @@ import React from "react";
 import "./App.sass";
 import ParamsList from "../ParamsList/ParamsList";
 import { useState, useEffect } from "react";
-import { setPriority } from "os";
 import { detect } from "detect-browser";
+import MapItem from "../MapItem/MapItem";
 
 export interface ScreenParams {
     width: number;
     height: number;
 }
 
+export interface Located {
+    latitude: number;
+    longitude: number;
+}
+
 function App() {
-    const [location, setLoaction] = useState<null | Record<string, any>>(null);
-    // const [browserInfo, setBrowserInfo] = useState(null)
+    const [located, setLoacted] = useState<null | Located>(null);
     const [IP, setIP] = useState(null);
     const [browserName, setBrowserName] = useState<null | string>(null);
     const [prevPage, setPrevPage] = useState("");
@@ -29,10 +33,9 @@ function App() {
     const getLocation = () => {
         if (navigator.geolocation) {
             console.log("gay");
-            // navigator.geolocation.getCurrentPosition((position) => setLoaction({latitude: position.coords.latitude}));
-            navigator.geolocation.getCurrentPosition((position) => setLoaction(Object.assign({ latitude: position.coords.latitude, longitude: position.coords.longitude })));
+            navigator.geolocation.getCurrentPosition((position) => setLoacted(Object.assign({ latitude: position.coords.latitude, longitude: position.coords.longitude })));
         } else {
-            setLoaction(null);
+            setLoacted(null);
         }
     };
 
@@ -97,18 +100,6 @@ function App() {
         }
     };
 
-    const getSmth = () => {
-        document.onmousemove = function mouse() {
-            console.log(window.AudioParam);
-        };
-        // const link = window.opener
-        // console.log(link)
-        // const language = navigator.vendorSub
-        // setBowserLang(language)
-        // сonsole.log(event)
-        // console.log(event)
-    };
-
     const getData = () => {
         getLocation();
         getBrowserV();
@@ -121,22 +112,20 @@ function App() {
         getBrowserLang();
         getMultiTouch();
         getPdfEnabled();
-        getSmth();
     };
 
     useEffect(() => {
         getData();
         getIP();
-        // setInterval(() => {
-        //     getData()
-        // }, 5 * 1000)
+        setInterval(() => {
+            getData();
+        }, 20 * 1000);
     }, []);
 
     return (
         <div className="app">
             <h1>browser params</h1>
             <ParamsList
-                location={location}
                 IP={IP}
                 browserName={browserName}
                 prevPage={prevPage}
@@ -150,6 +139,10 @@ function App() {
                 multiTouch={multiTouch}
                 pdfEnabled={pdfEnabled}
             />
+            <div className="location-wrapper">
+                <h2>Ваше местоположение:</h2>
+                <MapItem located={located} />
+            </div>
         </div>
     );
 }
