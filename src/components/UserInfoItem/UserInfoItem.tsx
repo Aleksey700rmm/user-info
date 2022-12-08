@@ -14,7 +14,7 @@ const UserInfoItem = (props: BrowserInfoItemProps) => {
         <div className="list-item">
             <h3>Информация о пользователе:</h3>
             <div className="list-item-descr">{`IP адрес: ${props.IP}`}</div>
-            <div className="list-item-descr">{`пропускная способность: ${props.networkSpeed} Mbps`}</div>
+            <div className="list-item-descr">{props.networkSpeed ? `пропускная способность: ${props.networkSpeed} Mbps` : "Не удалось определить"}</div>
             <div className="list-item-descr">{`Операционная система: ${props.OS}`}</div>
             <div className="list-item-descr">{`Параметры экрана: ширина ${props.screenParams?.width}px длина ${props.screenParams?.height}px`}</div>
             <div className="list-item-descr">{`Количество потоков: ${props.threadsNumber}`}</div>
