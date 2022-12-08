@@ -32,7 +32,6 @@ function App() {
 
     const getLocation = () => {
         if (navigator.geolocation) {
-            console.log("gay");
             navigator.geolocation.getCurrentPosition((position) => setLoacted(Object.assign({ latitude: position.coords.latitude, longitude: position.coords.longitude })));
         } else {
             setLoacted(null);
@@ -117,9 +116,13 @@ function App() {
     useEffect(() => {
         getData();
         getIP();
-        setInterval(() => {
+        let intervalId = setInterval(() => {
             getData();
         }, 20 * 1000);
+
+        return function cleanup() {
+            clearInterval(intervalId)
+        }
     }, []);
 
     return (
